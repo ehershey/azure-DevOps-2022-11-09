@@ -1,12 +1,13 @@
 trigger:
- - main
+- main
 
- pool:
+pool:
    vmImage: 'ubuntu-latest'
- variables:
+variables:
    imageName: 'demo-pipelines-docker'
    
- steps:
+ 
+steps:
  - task: Docker@2
    displayName: Build the demo image
    inputs:
