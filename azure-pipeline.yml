@@ -1,15 +1,26 @@
 trigger:
-      - main
+ - main
 
-        pool:
-          vmImage: 'ubuntu-latest'
-        variables:
-          imageName: 'demo-pipelines-docker'
-
-        steps:
-        - task: Docker@2
-          displayName: Build the demo image
-          inputs:
+ pool:
+   vmImage: 'ubuntu-latest'
+ variables:
+   imageName: 'demo-pipelines-docker'
+   
+ steps:
+ - task: Docker@2
+   displayName: Build the demo image
+   inputs:
             repository: $(imageName)
             command: build
             Dockerfile: app/Dockerfile
+
+ - task: Maven@4
+   inputs:
+     mavenPomFile: 'pom.xml'
+     mavenOptions: '-Xmx3072m'
+     javaHomeOption: 'JDKVersion'
+     jdkVersionOption: '1.11'
+     jdkArchitectureOption: 'x64'
+     publishJUnitResults: false
+     testResultsFiles: '**/surefire-reports/TEST-*.xml'
+     goals: 'package'
